@@ -1,5 +1,6 @@
 # README
-Based on : [mod_xml_curl](https://freeswitch.org/confluence/display/FREESWITCH/mod_xml_curl) module.
+Based on [mod_xml_curl](https://freeswitch.org/confluence/display/FREESWITCH/mod_xml_curl) module.
+
 This is a script for using PHP to generate dynamic XML. My script is based on a simple mySQL class. I know there's a PDO class and if someone wanted to walk me through it for sqlite/postgres compatibility I'd be interested.
 * It currently only does the dialplan (while xml_curl can be used for ANY FreeSWITCH XML configuration).
 * and only the default context
