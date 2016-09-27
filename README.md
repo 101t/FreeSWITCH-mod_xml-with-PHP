@@ -1,30 +1,24 @@
-README
-======
-
+# README
 This is a script for using PHP to generate dynamic XML. My script is based on a simple mySQL class. I know there's a PDO class and if someone wanted to walk me through it for sqlite/postgres compatibility I'd be interested.
 * It currently only does the dialplan (while xml_curl can be used for ANY FreeSWITCH XML configuration).
 * and only the default context
 
-BENEFITS:
-=========
+# BENEFITS:
+1. mod_lcr with advanced bill-determining capability. I want to further abstract it to make it easy to do a function call) so you can list the prices for users who search by a number.
+2. mod_lcr with an LRN table. If I had a callwithus account, I'd implement LRN lookup, it's cheap enough that it's worth it, and keep the db up to date.
+3. easy e.164 number translation without extra transfers and tons of extensions. Just one line of code for each transformation.
+4. local enum lookup, easily. And you can even put it after your billing code.
+5. ***and maybe my main one*** - drastically customize what goes on in the dial plan based on the user's preferences, wherever they are stored.
 
-a. mod_lcr with advanced bill-determining capability. I want to further abstract it to make it easy to do a function call) so you can list the prices for users who search by a number.
-b. mod_lcr with an LRN table. If I had a callwithus account, I'd implement LRN lookup, it's cheap enough that it's worth it, and keep the db up to date.
-c. easy e.164 number translation without extra transfers and tons of extensions. Just one line of code for each transformation.
-d. local enum lookup, easily. And you can even put it after your billing code.
-e. ***and maybe my main one*** - drastically customize what goes on in the dial plan based on the user's preferences, wherever they are stored.
+# TODO:
+1. Abstract my billing algorithm from the mod_lcr recode.
+2. restore the default mod_lcr query - I merged things into 2 tables instead of 3 hoping to improve query time, but that was unnecessary.
 
-TODO:
-=====
-a. Abstract my billing algorithm from the mod_lcr recode.
-b. restore the default mod_lcr query - I merged things into 2 tables instead of 3 hoping to improve query time, but that was unnecessary.
-
-Please follow all these steps:
-==============================
+# Please follow all these steps:
 ## 1. Setting up XML curl:
 XML is located in `freeswitch/src/mod/xml_int/mod_xml_curl` and you'll have to
-a. make && install it, if you hadn't done so already.
-b. Add it to your modules.conf for auto load, `<load module="mod_xml_curl"/>`
+    1. make && install it, if you hadn't done so already.
+    2. Add it to your modules.conf for auto load, `<load module="mod_xml_curl"/>`.
 
 
 ## 2. XML curl config files:
@@ -65,7 +59,8 @@ If someone knows how to do this more gracefully, I'd be appreciative.
 
 ## 6. there are various e.164 scripts, configured with the default array such as `array('local'=>9722, 'strip'=>1,'usa'=>1, 'israel'=>1, 'uk'=>1)`
 `$p['local']` means it will prefix 9722 to 7 digit numbers (This should probably be pulled from the db)
-`$p['strip']` means to strip +, 00, and 011 so that we have a uniform dialstring. I created a `$p['strip']=="normalize"` to change 00 and + to 011 if you'd prefer that. It *seems* unnecessary, but it's an option if you think otherwise.
+`$p['strip']` means to strip +, 00, and 011 so that we have a uniform dialstring. 
+I created a `$p['strip']=="normalize"` to change 00 and + to 011 if you'd prefer that. It *seems* unnecessary, but it's an option if you think otherwise.
 
 usa/israel, uk is to convert "local" dialing from each region into the full string. e.g. make sure USA has a 1, israel e.g. 077-xxx-xxxx is 97277xxx-xxxx, and uk 0800xxx-xxxx? goes to 448... etc.
 While these 3 countries DO coexist when dialed "locally", the countries you wish may not.
@@ -74,9 +69,7 @@ If you do write "local" dialplans for other countries, please share.
 
 
 
-SCHEMAS for MySQL
-=================
-
+# SCHEMAS for MySQL
 ## a_lrn for lrn tracking:
 ```sql
 CREATE TABLE IF NOT EXISTS `a_lrn` (
@@ -88,8 +81,6 @@ CREATE TABLE IF NOT EXISTS `a_lrn` (
    PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 ```
-
-
 ## a_did for incoming DID routing - use an extension number or prefix with sip:
 ```sql
 CREATE TABLE IF NOT EXISTS `a_did` (
